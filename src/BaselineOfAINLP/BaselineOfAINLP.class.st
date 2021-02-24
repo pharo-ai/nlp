@@ -17,9 +17,9 @@ BaselineOfAINLP >> baseline: spec [
 
 			"Packages"
 				spec 
-					package: 'AINLP'					with: [ spec requires: #('AIStopwords') ].
+					package: 'AI-NLP'					with: [ spec requires: #('AIStopwords') ].
 		
 				spec
-					group: 'Core' 						with: #('AINLP');
+					group: 'Core' 						with: #('AI-NLP');
 					group: 'default' 					with: #('Core') ]
 ]
