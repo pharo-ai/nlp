@@ -23,5 +23,5 @@ BaselineOfAINLP >> baseline: spec [
 				spec
 					group: 'Core' 						with: #('AI-NLP');
 					group: 'Tests' 						with: #('AI-NLP' 'AI-NLP-Tests');
-					group: 'default' 					with: #('	Tests') ]
+					group: 'default' 					with: #('Core' 'Tests') ]
 ]
