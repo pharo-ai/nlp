@@ -10,27 +10,27 @@ Class {
 	#category : #'AI-NLP-NGram'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 AINgramLanguageModel >> buildVocab [
 	^ trainData asBag.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 AINgramLanguageModel >> countOfHistory: anNgramHistory [
 	^ historyCounts occurrencesOf: anNgramHistory
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 AINgramLanguageModel >> countOfNgram: anNgram [
 	^ ngramCounts occurrencesOf: anNgram
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 AINgramLanguageModel >> countOfUniqueNgramsEndingWith: aWord [
 	^ (ngramCounts asSet select: [ :ngram | ngram last = aWord ]) size
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 AINgramLanguageModel >> countOfUniqueNgramsWithHistory: ngram [
 	^ (ngramCounts asSet
 		select: [ :eachNgram | eachNgram history = ngram ]) size.
@@ -58,7 +58,7 @@ AINgramLanguageModel >> order [
 	^order
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 AINgramLanguageModel >> predictNextWord: anNgramHistory [
 	| ngramsWithHistory topOne |
 	ngramsWithHistory := ngramCounts select: [ :ngram | ngram history = anNgramHistory  ].
@@ -66,7 +66,7 @@ AINgramLanguageModel >> predictNextWord: anNgramHistory [
 	^ topOne last
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 AINgramLanguageModel >> predictNextWord: history top: aNumber [
 	| ngramsWithHistory lo topOnes |
 	ngramsWithHistory := ngramCounts select: [ :ngram | ngram history = history ].
@@ -76,7 +76,7 @@ AINgramLanguageModel >> predictNextWord: history top: aNumber [
 	^ topOnes collect: #last
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 AINgramLanguageModel >> probabilityOfNgram: ngram [
 	"Probability of n-gram is a conditional probability of its last word w given the history h (n-gram of order n-1): P(w|h)"
 	|histCount ngramCount|
@@ -89,7 +89,7 @@ AINgramLanguageModel >> probabilityOfNgram: ngram [
 	^ (ngramCount / histCount) asFloat.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 AINgramLanguageModel >> probabilityOfText: anArrayOfWords [
 	| ngrams |
 	ngrams := (anArrayOfWords collect: [ :token | token asLowercase ]) ngrams: order.
@@ -98,14 +98,14 @@ AINgramLanguageModel >> probabilityOfText: anArrayOfWords [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 AINgramLanguageModel >> topNgrams: order [
 	| ngramsCollection |
 	ngramsCollection := (trainData ngrams: order) asBag sortedCounts.
 	^ ngramsCollection
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 AINgramLanguageModel >> topNgrams: order k: count [
 	| ngramsCollection |
 	ngramsCollection := (trainData ngrams: order) asBag sortedCounts.
@@ -122,7 +122,7 @@ AINgramLanguageModel >> trainData [
 	^trainData 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 AINgramLanguageModel >> trainOn: anArrayOfTokens order: value [
 	| trainNgrams |
 	
