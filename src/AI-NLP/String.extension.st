@@ -18,11 +18,11 @@ String >> ngrams: order padWith: padSymbol [
 { #category : #'*AI-NLP' }
 String >> removeSpecialArtifacts [
 
-	^ self removeSpecialArtifactsUsing: AIWordTokenizer new specialArtifacts
+	^ self removeSpecialArtifacts: AIWordTokenizer new specialArtifacts
 ]
 
 { #category : #'*AI-NLP' }
-String >> removeSpecialArtifactsUsing: artifactsCollection [
+String >> removeSpecialArtifacts: artifactsCollection [
 
 	^ (self findBetweenSubstrings: artifactsCollection) joinUsing: ' '
 ]
@@ -54,6 +54,5 @@ String >> tokenizeForNgrams [
 String >> tokenizeWithoutStopwords [
 	" Answer a <Collection> of <String> each one representing the receiver's tokens without stopwords "
 	
-	^ self tokenize 
-		removeStopwordsUsing: AIStopwords forEnglish
+	^ self tokenize removeStopwordsUsing: AIStopwords forEnglish
 ]
