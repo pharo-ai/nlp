@@ -13,11 +13,13 @@ BaselineOfAINLP >> baseline: spec [
 			"External dependencies"
 			spec
 				baseline: 'AIStopwords'
-				with: [ spec repository: 'github://pharo-ai/stopwords/src' ].
+				with: [ spec repository: 'github://pharo-ai/stopwords/src' ];
+				baseline: 'AILinearAlgebra'
+				with: [ spec repository: 'github://pharo-ai/linear-algebra/src' ].
 
 			"Packages"
 				spec 
-					package: 'AI-NLP'					with: [ spec requires: #('AIStopwords') ];
+					package: 'AI-NLP'					with: [ spec requires: #('AIStopwords' 'AILinearAlgebra') ];
 					package: 'AI-NLP-Tests'			with: [ spec requires: #('AI-NLP') ].
 		
 				spec
