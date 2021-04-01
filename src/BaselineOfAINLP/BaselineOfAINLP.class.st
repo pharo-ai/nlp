@@ -15,11 +15,13 @@ BaselineOfAINLP >> baseline: spec [
 				baseline: 'AIStopwords'
 				with: [ spec repository: 'github://pharo-ai/stopwords/src' ];
 				baseline: 'AILinearAlgebra'
-				with: [ spec repository: 'github://pharo-ai/linear-algebra/src' ].
+				with: [ spec repository: 'github://pharo-ai/linear-algebra/src' ];
+				baseline: 'DataFrame'
+				with: [ spec repository: 'github://PolyMathOrg/DataFrame/src' ].
 
 			"Packages"
 				spec 
-					package: 'AI-NLP'					with: [ spec requires: #('AIStopwords' 'AILinearAlgebra') ];
+					package: 'AI-NLP'					with: [ spec requires: #('AIStopwords' 'AILinearAlgebra' 'DataFrame') ];
 					package: 'AI-NLP-Tests'			with: [ spec requires: #('AI-NLP') ].
 		
 				spec

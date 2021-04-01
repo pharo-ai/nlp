@@ -32,7 +32,7 @@ AITerms class >> fromString: aString [
 
 	| scanner |
 
-	scanner := (AITermScanner new).
+	scanner := AITermScanner new.
 	scanner onString: aString.	
 	^ scanner allTerms.			
 		

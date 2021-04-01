@@ -14,7 +14,7 @@ AITfIdfVectorizer >> transform: aCollectionOfDocuments [
 	aCollectionOfDocuments doWithIndex: [: doc : index |
 		corpus 
 			addDocument: index asString
-			with: (AITerms newFrom: doc)].
+			with: (AITerms fromString: doc)].
 	^ AITermDocumentMatrix on: corpus.
 
 ]
