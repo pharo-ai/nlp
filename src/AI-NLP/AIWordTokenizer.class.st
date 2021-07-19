@@ -72,15 +72,24 @@ AIWordTokenizer >> nextIsInvalid: aStream [
 
 { #category : #defaults }
 AIWordTokenizer >> specialArtifacts [
+
 	" Answer a <Collection> of <String> representing artifacts commonly found in natural language written text. Generate them in reverse order so larger occurrences can be detected first. "
-	
-	^ #('<br />' ':-)' ':-(' ':)' ':(') asOrderedCollection 
-	addAll: (
-		(#($- $! $? $* $( $) $\ $/ $| $_ $# $> $< $% $" $$ $, $.) collect: [ : repChar |
-			(2 to: 10) reversed collect: [ : rep | String new: rep withAll: repChar ] ]) joinUsing: Array empty
-	);
-	yourself 
-	
+
+	| emojisAndHtmlCharacters garbageCharacters |
+	emojisAndHtmlCharacters := #( '<br />' ':-)' ':-(' ':)' ':(' )
+		                           asOrderedCollection.
+	garbageCharacters := ((#( $- $! $? $* $( $) $\ $/ $| $_ $# $> $< $%
+	                          $" $$ $, $. ) collect: [ :repChar | 
+		                       (1 to: 10) reversed collect: [ :rep | 
+			                       String new: rep withAll: repChar ] ]) 
+		                      joinUsing: Array empty) asOrderedCollection.
+	"We do not want to remove the dot . since is a grammar sign that indicates the end of a sentence. The same for the question mark ? the comma , and the exclamation mark !"
+	garbageCharacters
+		remove: '.';
+		remove: '?';
+		remove: ',';
+		remove: '!'.
+	^ emojisAndHtmlCharacters , garbageCharacters
 ]
 
 { #category : #tokenizing }
