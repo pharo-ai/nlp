@@ -17,14 +17,21 @@ String >> ngrams: order padWith: padSymbol [
 
 { #category : #'*AI-NLP' }
 String >> removeSpecialArtifacts [
+	" Anwer a <String> with the receiver's copy without special artifacts defined in the default word tokenizer "
 
-	^ self removeSpecialArtifacts: AIWordTokenizer new specialArtifacts
+	| wordString |
+	
+	wordString := self removeSpecialArtifacts: AIWordTokenizer specialArtifacts.
+	^ (wordString copyWithoutAll: ':.,()><-*?¿!"%$^&/§\#=[]{}') trimBoth
 ]
 
 { #category : #'*AI-NLP' }
 String >> removeSpecialArtifacts: artifactsCollection [
-
-	^ (self findBetweenSubstrings: artifactsCollection) joinUsing: ' '
+	" Anwer a <String> with the receiver's copy without special artifacts defined in artifactsCollection "
+	
+	^ (self size <= 3 and: [ artifactsCollection includes: self ])
+		ifTrue: [ String empty ]
+		ifFalse: [ (self findBetweenSubstrings: artifactsCollection) joinUsing: ' ' ].
 ]
 
 { #category : #'*AI-NLP' }

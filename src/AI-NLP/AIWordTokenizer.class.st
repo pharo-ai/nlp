@@ -28,8 +28,57 @@ Class {
 	#instVars : [
 		'skipSpecial'
 	],
+	#classVars : [
+		'SpecialArtifacts'
+	],
 	#category : #'AI-NLP-Tokenizer'
 }
+
+{ #category : #defaults }
+AIWordTokenizer class >> emojisAndHtmlCharacters [
+	" Answer a <Collection> of <String> commonly found in HTML text "
+
+	^ #('<br />' ':-)' ':-(' ':)' ':(' )
+]
+
+{ #category : #defaults }
+AIWordTokenizer class >> garbageCharacters [
+	" Generate them in reverse order so larger occurrences can be detected first. (on hold - #reversed - until https://github.com/pharo-project/pharo/issues/6191 gets fixed) "
+
+	| garbageCharacters |
+	garbageCharacters := ((#( $- $! $? $* $( $) $\ $/ $| $_ $# $> $< $% $$ $, $. $") 
+		collect: [ :repChar | (2 to: 10) "reversed" collect: [ :rep | String new: rep withAll: repChar ] ])
+			joinUsing: Array empty).
+	^ garbageCharacters asArray
+]
+
+{ #category : #initialization }
+AIWordTokenizer class >> initializeSpecialArtifacts [
+
+	^ Array streamContents: [ : stream | 
+		stream 
+			<< self emojisAndHtmlCharacters;
+			<< self garbageCharacters ]
+]
+
+{ #category : #initialization }
+AIWordTokenizer class >> reset [
+	<script>
+
+	SpecialArtifacts := nil.
+
+]
+
+{ #category : #accessing }
+AIWordTokenizer class >> specialArtifacts [
+	" Answer a <Collection> of <String> representing artifacts commonly found in natural language written text. "
+
+	^ SpecialArtifacts 
+		ifNil: [ 
+			SpecialArtifacts := self initializeSpecialArtifacts.
+			SpecialArtifacts ].
+
+]
 
 { #category : #accessing }
 AIWordTokenizer >> beSkipSpecial [
@@ -68,28 +117,6 @@ AIWordTokenizer >> nextIsInvalid: aStream [
 	[ aStream atEnd not and: [ self isSkipSpecial and: [ self isSpecial: aStream peek ] ] ]
 		whileTrue: [ aStream skip: 1 ].
 	^ aStream atEnd
-]
-
-{ #category : #defaults }
-AIWordTokenizer >> specialArtifacts [
-
-	" Answer a <Collection> of <String> representing artifacts commonly found in natural language written text. Generate them in reverse order so larger occurrences can be detected first. "
-
-	| emojisAndHtmlCharacters garbageCharacters |
-	emojisAndHtmlCharacters := #( '<br />' ':-)' ':-(' ':)' ':(' )
-		                           asOrderedCollection.
-	garbageCharacters := ((#( $- $! $? $* $( $) $\ $/ $| $_ $# $> $< $%
-	                          $" $$ $, $. ) collect: [ :repChar | 
-		                       (1 to: 10) reversed collect: [ :rep | 
-			                       String new: rep withAll: repChar ] ]) 
-		                      joinUsing: Array empty) asOrderedCollection.
-	"We do not want to remove the dot . since is a grammar sign that indicates the end of a sentence. The same for the question mark ? the comma , and the exclamation mark !"
-	garbageCharacters
-		remove: '.';
-		remove: '?';
-		remove: ',';
-		remove: '!'.
-	^ emojisAndHtmlCharacters , garbageCharacters
 ]
 
 { #category : #tokenizing }
