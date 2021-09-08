@@ -5,7 +5,8 @@ Class {
 	#name : #AITerms,
 	#superclass : #Bag,
 	#instVars : [
-		'size'
+		'size',
+		'stopwords'
 	],
 	#category : #'AI-NLP-TFIDF'
 }
@@ -57,9 +58,10 @@ AITerms class >> sample [
 ]
 
 { #category : #adding }
-AITerms >> addString: string [
+AITerms >> addString: aString [
+	" Add a token delimited <String> into the receiver's using a default scanner for terms "
 	
-	"^self addString: string using: AITermScanner"
+	^ self addString: aString using: AITermScanner
 ]
 
 { #category : #adding }
@@ -72,9 +74,10 @@ AITerms >> addString: string using: scannerClass [
 ]
 
 { #category : #adding }
-AITerms >> addTerms: aTerms [
-	
-	aTerms withCountDo: [:each :count | self add: each withOccurrences: count]
+AITerms >> addTerms: termsBag [
+	" Add <AITerms> in termsBag to the receiver "
+
+	termsBag withCountDo: [ :each :count | self add: each withOccurrences: count ]
 ]
 
 { #category : #accessing }
@@ -129,8 +132,9 @@ AITerms >> removeRareTerms: occurrence [
 
 { #category : #removing }
 AITerms >> removeStopwords [
+	" Answer a <> without stopwords defined in the receiver's stopwords collection "
 
-	^self removeStopwords:  AIStopwords forEnglish
+	^ self removeStopwords: self stopwords
 ]
 
 { #category : #removing }
@@ -149,9 +153,23 @@ AITerms >> stemAll [
 		withCountDo:
 			[:term :count | 
 			newTerms
-				add: (AIStemmer stem: term) 
+				add: (AIStemmer new stem: term) 
 				withOccurrences: count].
 	self become: newTerms
+]
+
+{ #category : #accessing }
+AITerms >> stopwords [
+	" Answer a <Collection> containing stopwords for the receiver's use "
+
+	^ stopwords
+		ifNil: [ stopwords := AIStopwords forEnglish ]
+]
+
+{ #category : #accessing }
+AITerms >> stopwords: anObject [
+
+	stopwords := anObject
 ]
 
 { #category : #enumerating }
@@ -170,6 +188,27 @@ AITerms >> top: topTenSize [
 AITerms >> topTen [
 	
 	^(self sortedCounts first: 10) collect: #value
+]
+
+{ #category : #accessing }
+AITerms >> useStopwordsForEnglish [
+	" Set the receiver to use stopwords for english language "
+
+	self stopwords: AIStopwords forEnglish
+]
+
+{ #category : #accessing }
+AITerms >> useStopwordsForFrench [
+	" Set the receiver to use stopwords for french language "
+
+	self stopwords: AIStopwords forFrench
+]
+
+{ #category : #accessing }
+AITerms >> useStopwordsForSpanish [
+	" Set the receiver to use stopwords for spanish language "
+
+	self stopwords: AIStopwords forSpanish
 ]
 
 { #category : #enumerating }

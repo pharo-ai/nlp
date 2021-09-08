@@ -11,6 +11,12 @@ Class {
 }
 
 { #category : #accessing }
+AIStemmer class >> stem: aTerm [
+
+	^ self new stem: aTerm
+]
+
+{ #category : #accessing }
 AIStemmer >> cache [
 	"Answer the cache of stemmed words."
 	
