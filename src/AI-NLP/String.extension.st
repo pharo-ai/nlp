@@ -1,21 +1,6 @@
 Extension { #name : #String }
 
 { #category : #'*AI-NLP' }
-String >> asAINgram [
-	^ AINgram withElements: { self }
-]
-
-{ #category : #'*AI-NLP' }
-String >> ngrams: order [
-	^ self tokenizeForNgrams ngrams: order
-]
-
-{ #category : #'*AI-NLP' }
-String >> ngrams: order padWith: padSymbol [
-	^ self tokenizeForNgrams ngrams: order padWith: padSymbol
-]
-
-{ #category : #'*AI-NLP' }
 String >> removeSpecialArtifacts [
 	" Anwer a <String> with the receiver's copy without special artifacts defined in the default word tokenizer "
 
@@ -48,18 +33,4 @@ String >> tokenize [
 
 	^ AIWordTokenizer new 
 		tokenize: self
-]
-
-{ #category : #'*AI-NLP' }
-String >> tokenizeForNgrams [
-	|tokenizer|
-	tokenizer := AITokenizer new.
-	^ tokenizer tokenizeFlatten: self.
-]
-
-{ #category : #'*AI-NLP' }
-String >> tokenizeWithoutStopwords [
-	" Answer a <Collection> of <String> each one representing the receiver's tokens without stopwords "
-	
-	^ self tokenize removeStopwordsUsing: AIStopwords forEnglish
 ]
